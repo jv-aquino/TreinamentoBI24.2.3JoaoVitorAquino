@@ -52,5 +52,20 @@ export const userService = {
     }
 
     return user;
+  },
+  patch: (id: string, data: Partial<Omit<User, 'id'>>) => {
+    const user = userRepository.getAll().find(user => user.id === Number(id));
+
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    const updatedUser: User = { ...user, ...data };
+
+    userRepository.delete(user.id); // Remove o antigo
+    userRepository.create(updatedUser); // Adiciona o novo
+
+    const { senha, ...safeUser } = updatedUser; 
+    return safeUser;
   }
 };
