@@ -1,8 +1,8 @@
-import { application, Router } from 'express';
-import testsRouter from './tests.routes';
+import { Router } from 'express';
+import { userController } from '../controllers/userController';
 
-const routes = Router();
+const userRoutes = Router();
 
-routes.use('/tests', testsRouter);
+userRoutes.post('/users', userController.create);
 
-export default routes;
+export default userRoutes;
