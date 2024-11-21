@@ -32,12 +32,25 @@ export const userService = {
   },
   getById: (id: string) => {
     const users = userRepository.getAll().map(({ senha, ...user }) => user);
-    const user = users.filter(user => user.id === Number(id));
+    const user = users.filter(user => user.id === Number(id))[0];
     
     if (!user) {
       throw new Error('Usuário não encontrado');
     }
+
+    return user;
+  },
+  delete: (id: string) => {
+    const user = userRepository.getAll().filter(user => user.id === Number(id))[0];
     
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    if (!userRepository.delete(Number(id))) {
+      throw new Error('Erro do servidor');
+    }
+
     return user;
   }
 };

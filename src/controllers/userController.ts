@@ -26,7 +26,7 @@ export const userController = {
     }
   },
   getById: (req: Request, res: Response) => { 
-    const { id } = req.body;
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({ error: "O campo 'id' é necessário" });
@@ -34,6 +34,20 @@ export const userController = {
 
     try {
       const user = userService.getById(id);
+      return res.status(200).json(user);
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message });
+    }
+  },
+  delete: (req: Request, res: Response) => { 
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ error: "O campo 'id' é necessário" });
+    }
+
+    try {
+      const user = userService.delete(id);
       return res.status(200).json(user);
     } catch (err: any) {
       return res.status(500).json({ error: err.message });

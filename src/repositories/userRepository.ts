@@ -15,4 +15,11 @@ export const userRepository = {
     users.push(user);
     return user;
   },
+  delete: (id: number) => {
+    const index = users.findIndex(user => user.id === id);
+    if (index === -1) {
+      return false;
+    } 
+    return users.splice(index, 1);
+  }
 };
