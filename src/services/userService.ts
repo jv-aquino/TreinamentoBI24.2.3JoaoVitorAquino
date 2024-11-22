@@ -1,7 +1,7 @@
 import { userRepository } from '../repositories/userRepository';
 import { User } from '../models/user';
 
-let nextId = 1;
+let nextId = 0;
 
 export const userService = {
   createUser: (data: Omit<User, 'id'>) => {

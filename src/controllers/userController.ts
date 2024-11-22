@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userService } from '../services/userService';
-import { userValidation } from '../utils/validations';
+import { userValidation } from '../utils/userValidation';
 
 export const userController = {
   create: (req: Request, res: Response) => {
