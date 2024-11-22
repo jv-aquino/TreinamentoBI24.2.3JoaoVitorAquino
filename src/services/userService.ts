@@ -31,8 +31,7 @@ export const userService = {
     return users.map(({ senha, ...user }) => user);
   },
   getById: (id: string) => {
-    const users = userRepository.getAll().map(({ senha, ...user }) => user);
-    const user = users.filter(user => user.id === Number(id))[0];
+    const user = userRepository.getById(Number(id));
     
     if (!user) {
       throw new Error('Usuário não encontrado');
@@ -41,11 +40,7 @@ export const userService = {
     return user;
   },
   delete: (id: string) => {
-    const user = userRepository.getAll().filter(user => user.id === Number(id))[0];
-    
-    if (!user) {
-      throw new Error('Usuário não encontrado');
-    }
+    const user = userService.getById(id);
 
     if (!userRepository.delete(Number(id))) {
       throw new Error('Erro do servidor');
@@ -54,16 +49,12 @@ export const userService = {
     return user;
   },
   patch: (id: string, data: Partial<Omit<User, 'id'>>) => {
-    const user = userRepository.getAll().find(user => user.id === Number(id));
-
-    if (!user) {
-      throw new Error('Usuário não encontrado');
-    }
+    const user = userService.getById(id);
 
     const updatedUser: User = { ...user, ...data };
 
-    userRepository.delete(user.id); // Remove o antigo
-    userRepository.create(updatedUser); // Adiciona o novo
+    userRepository.delete(user.id);
+    userRepository.create(updatedUser);
 
     const { senha, ...safeUser } = updatedUser; 
     return safeUser;

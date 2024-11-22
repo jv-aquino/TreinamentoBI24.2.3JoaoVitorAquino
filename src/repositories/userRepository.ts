@@ -5,6 +5,14 @@ const users: User[] = [];
 export const userRepository = {
   getAll: () => users,
 
+  getById: (id: number) => {
+    const index = users.findIndex(user => user.id === id);
+    if (index === -1) {
+      return false;
+    }
+    return users[index]; 
+  },
+
   findByEmail: (email: string) => users.find(user => user.email === email),
 
   findByCPF: (cpf: string) => users.find(user => user.cpf === cpf),
@@ -16,10 +24,10 @@ export const userRepository = {
     return user;
   },
   delete: (id: number) => {
-    const index = users.findIndex(user => user.id === id);
-    if (index === -1) {
+    const user = userRepository.getById(id);
+    if (!user) {
       return false;
-    } 
-    return users.splice(index, 1);
+    }
+    return users.splice(user.id, 1);
   }
 };
